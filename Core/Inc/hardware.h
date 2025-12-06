@@ -1,0 +1,94 @@
+/**
+ * @file hardware.h
+ * @brief Hardware Abstraction Layer - Updated for PWM Fan/Buzzer
+ * @author HoangAnhNguyenHu & Gemini
+ * @date 2025-01-30
+ */
+
+#ifndef HARDWARE_H
+#define HARDWARE_H
+
+#include <stdint.h>
+#include "pinout.h"
+
+/* ============================================================================ */
+/* HARDWARE INITIALIZATION                              */
+/* ============================================================================ */
+
+void Hardware_InitClocks(void);
+void Hardware_InitGPIO(void);
+void Hardware_InitSystemTimer(void);
+
+/**
+ * @brief Init all hardware (Clocks, GPIO, Timers, Motors, etc.)
+ */
+void Hardware_Init(void);
+
+/* ============================================================================ */
+/* MOTOR CONTROL                                        */
+/* ============================================================================ */
+
+void Hardware_InitMotors(void);
+void Hardware_SetMotor(uint8_t motor, int8_t speed);
+void Hardware_StopMotors(void);
+
+/* ============================================================================ */
+/* AUX PWM (FAN / BUZZER) - NEW!                        */
+/* ============================================================================ */
+
+/**
+ * @brief dieu khien PWM cho chan PB11 (Fan or Buzzer)
+ * @param duty: 0 (off) to 4999 (Max speed)
+ */
+void Hardware_SetAuxPWM(uint16_t duty);
+
+/* ============================================================================ */
+/* ENCODER FUNCTIONS                                    */
+/* ============================================================================ */
+
+void Hardware_InitEncoders(void);
+int32_t Hardware_GetEncoderCount(uint8_t encoder);
+float Hardware_GetEncoderSpeed(uint8_t encoder);
+void Hardware_ResetEncoder(uint8_t encoder);
+void Hardware_UpdateEncoders(void);
+
+/* ============================================================================ */
+/* IR SENSORS                                           */
+/* ============================================================================ */
+
+void Hardware_InitIRSensors(void);
+void Hardware_IRLedOn(IR_Sensor_t sensor);
+void Hardware_IRLedOff(IR_Sensor_t sensor);
+void Hardware_IRLedAllOff(void);
+uint16_t Hardware_ReadIRSensor(IR_Sensor_t sensor);
+
+/* ============================================================================ */
+/* BUTTONS                                              */
+/* ============================================================================ */
+
+void Hardware_InitButtons(void);
+
+/**
+ * @brief Read button state
+ * @param button: 0=KEY (PA0). (ID 1=MODE is removed)
+ * @return 1=pressed, 0=released
+ */
+uint8_t Hardware_ReadButton(uint8_t button);
+
+/* ============================================================================ */
+/* BUZZER (Legacy Support)                              */
+/* ============================================================================ */
+
+void Hardware_InitBuzzer(void);
+void Hardware_BuzzerOn(void);
+void Hardware_BuzzerOff(void);
+void Hardware_Beep(uint16_t duration_ms);
+
+/* ============================================================================ */
+/* SYSTEM STATUS                                        */
+/* ============================================================================ */
+
+float Hardware_GetBatteryVoltage(void);
+void Hardware_PrintStatus(void);
+
+#endif /* HARDWARE_H */
